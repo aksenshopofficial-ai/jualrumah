@@ -1,82 +1,1144 @@
-from pathlib import Path
-import re
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Rumah dijual di Jl. Jungklang, Patokbeusi, Subang. Tanah 485 m², bangunan 40 m², 3 kamar tidur. Hubungi penjual untuk survei.">
+<meta name="theme-color" content="#173d32">
+<title>Rumah Dijual di Patokbeusi, Subang | 485 m²</title>
 
-path = Path("/mnt/data/landing-page-properti-patokbeusi.html")
-html = path.read_text(encoding="utf-8")
+<style>
+:root {
+  --green:#243b32;
+  --green2:#385849;
+  --gold:#c6a875;
+  --cream:#f7f8f6;
+  --white:#fff;
+  --ink:#252b27;
+  --muted:#727b75;
+  --line:#e8ebe8;
+}
 
-# Minimalist styling: simplify typography, spacing, borders, and cards.
-html = html.replace(
-    "font:16px/1.6 Arial,Helvetica,sans-serif",
-    "font:15px/1.65 Arial,Helvetica,sans-serif"
-)
-html = html.replace(
-    "--green:#173d32;--green2:#245747;--gold:#d5ad68;--cream:#f5f3ed;--white:#fff;--ink:#202722;--muted:#6d7770;--line:#e4e8e3",
-    "--green:#243b32;--green2:#385849;--gold:#c6a875;--cream:#f7f8f6;--white:#fff;--ink:#252b27;--muted:#727b75;--line:#e8ebe8"
-)
-html = html.replace(".wrap{width:min(1160px,calc(100% - 40px));margin:auto}", ".wrap{width:min(1040px,calc(100% - 40px));margin:auto}")
-html = html.replace(".hero{padding:28px 0 42px;background:var(--cream)}", ".hero{padding:24px 0 34px;background:#fff}")
-html = html.replace(".hero-photo{height:470px;", ".hero-photo{height:430px;")
-html = html.replace("border-radius:8px", "border-radius:4px")
-html = html.replace(".status{position:absolute;z-index:2;left:22px;top:22px;background:var(--gold);color:#26372d;padding:8px 14px;border-radius:3px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}",
-                    ".status{position:absolute;z-index:2;left:18px;top:18px;background:#fff;color:var(--green);padding:7px 11px;border-radius:2px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}")
-html = html.replace(".hero-info{display:grid;grid-template-columns:1fr auto;gap:25px;align-items:end;padding:27px 4px 0}",
-                    ".hero-info{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding:24px 0 0}")
-html = html.replace("font-size:clamp(29px,4vw,43px)", "font-size:clamp(27px,3.5vw,38px)")
-html = html.replace(".quick{background:#fff;border-bottom:1px solid var(--line)}", ".quick{background:#fff;border-bottom:1px solid var(--line)}")
-html = html.replace("section{padding:66px 0}", "section{padding:52px 0}")
-html = html.replace(".section-title h2{margin:0;color:var(--green);font-size:clamp(26px,3vw,34px);line-height:1.2}",
-                    ".section-title h2{margin:0;color:var(--green);font-size:clamp(24px,2.7vw,30px);line-height:1.25}")
-html = html.replace(".summary-card{background:var(--cream);padding:25px;border-radius:7px}", ".summary-card{background:#fff;padding:0 0 0 24px;border-left:1px solid var(--line);border-radius:0}")
-html = html.replace(".gallery{background:var(--cream)}", ".gallery{background:var(--cream)}")
-html = html.replace(".media{aspect-ratio:4/3;background:#e1e5de;border-radius:5px;", ".media{aspect-ratio:4/3;background:#e1e5de;border-radius:3px;")
+* {
+  box-sizing:border-box;
+}
 
-# Remove the duplicated quick-spec strip; specifications are listed once in the property details.
-html = re.sub(r'<div class="quick"><div class="wrap quick-grid">.*?</div></div>\s*<section>',
-              '<section>', html, count=1, flags=re.S)
+html {
+  scroll-behavior:smooth;
+}
 
-# Simplify copy in the property detail section and make the specs the single source of facts.
-html = html.replace(
-    '<p>Ditawarkan rumah satu lantai di kawasan Jl. Jungklang, Patokbeusi, Kabupaten Subang. Properti ini memiliki luas tanah 485 m² dan luas bangunan 40 m², dengan 3 kamar tidur serta akses kendaraan mobil.</p>\n<p>Silakan jadwalkan survei untuk melihat langsung kondisi bangunan, lingkungan sekitar, akses jalan, serta memeriksa dokumen properti.</p>\n<div class="checklist"><div class="check">Akses mobil</div><div class="check">Tersedia kanopi</div><div class="check">Rumah satu lantai</div><div class="check">3 kamar tidur</div></div>',
-    '<p>Rumah satu lantai di Jl. Jungklang, Patokbeusi, dengan area tanah 485 m² dan bangunan 40 m². Untuk memastikan kondisi, akses, dan kelengkapan dokumen, calon pembeli disarankan melakukan survei langsung.</p>'
-)
+body {
+  margin:0;
+  background:#fff;
+  color:var(--ink);
+  font:15px/1.65 Arial,Helvetica,sans-serif;
+}
 
-# Remove repeated contact CTAs below the hero. Keep a single WhatsApp button in the main property header.
-html = re.sub(r'<section><div class="wrap"><div class="section-title"><div class="eyebrow">Lokasi properti</div>.*?</div></section>\s*<section class="price-cta">.*?</section>',
-              '<section><div class="wrap"><div class="section-title"><div class="eyebrow">Lokasi properti</div><h2>Patokbeusi, Kabupaten Subang</h2><p>Untuk titik lokasi yang tepat dan jadwal kunjungan, silakan hubungi penjual.</p></div></div></section>',
-              html, count=1, flags=re.S)
+a {
+  color:inherit;
+  text-decoration:none;
+}
 
-# Remove the old repeated price banner CSS and reduce footer clutter.
-html = re.sub(r'\.price-cta\{.*?\}\.price-row\{.*?\}\.price-row \.eyebrow\{.*?\}\.price-row h2\{.*?\}\.price-row p\{.*?\}\.price-row \.btn\{.*?\}', '', html, count=1)
-html = html.replace(
-    '<span>Informasi penjualan rumah · Patokbeusi, Subang</span><span>Detail dapat dikonfirmasi kepada penjual.</span>',
-    '<span>Informasi properti · Patokbeusi, Subang</span>'
-)
-html = html.replace(
-    '<div class="section-title"><div class="eyebrow">Dokumentasi</div><h2>Galeri foto & video rumah</h2><p>Lihat kondisi properti melalui dokumentasi aktual. Silakan hubungi penjual jika ingin meminta foto tambahan atau menjadwalkan survei.</p></div>',
-    '<div class="section-title"><div class="eyebrow">Galeri</div><h2>Foto properti</h2></div>'
-)
-html = html.replace(
-    '<div class="section-title"><div class="eyebrow">Tentang properti</div><h2>Temukan rumah dengan area tanah yang lapang.</h2></div>',
-    '<div class="section-title"><div class="eyebrow">Deskripsi</div><h2>Rumah dengan area tanah luas.</h2></div>'
-)
-html = html.replace(
-    '<div class="section-title"><div class="eyebrow">Informasi pembelian</div><h2>Pertanyaan yang sering diajukan</h2></div>',
-    '<div class="section-title"><div class="eyebrow">Sebelum membeli</div><h2>Informasi penting</h2></div>'
-)
-html = html.replace(
-    '<p class="gallery-note">Pastikan foto dan video yang diunggah merupakan dokumentasi asli properti.</p>',
-    '<p class="gallery-note">Dokumentasi properti. Silakan jadwalkan survei untuk melihat kondisi secara langsung.</p>'
-)
+.wrap {
+  width:min(1040px,calc(100% - 40px));
+  margin:auto;
+}
 
-# Remove checklist styling no longer used and tune responsive layout.
-html = html.replace(".checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin-top:22px}.check{font-size:13px;color:#405148}.check:before{content:\"✓\";color:var(--green2);font-weight:bold;margin-right:9px}", "")
-html = html.replace("@media(max-width:760px){.hero-photo{height:330px}", "@media(max-width:760px){.hero-photo{height:300px}")
-html = html.replace(".about-grid{grid-template-columns:1fr;gap:25px}", ".about-grid{grid-template-columns:1fr;gap:28px}.summary-card{padding:22px 0 0;border-left:0;border-top:1px solid var(--line)}")
-html = html.replace("@media(max-width:460px){.wrap{width:calc(100% - 28px)}", "@media(max-width:460px){.wrap{width:calc(100% - 28px)}")
-html = html.replace("section{padding:48px 0}", "section{padding:40px 0}")
-# Use a single WhatsApp destination/button; all CTA class links collapse to the hero one.
-html = re.sub(r'<a class="btn wa" href="#">Tanyakan lokasi & jadwal survei</a>', '', html)
-html = re.sub(r'<a class="btn wa" href="#">Hubungi penjual via WhatsApp</a>(?!.*?<a class="btn wa")', '<a class="btn wa" href="#">Hubungi penjual via WhatsApp</a>', html, count=0)
+.top {
+  background:var(--green);
+  color:#e9eee9;
+  font-size:12px;
+  padding:9px 0;
+}
 
-path.write_text(html, encoding="utf-8")
-print(f"Versi minimalis berhasil disimpan: {path} ({path.stat().st_size:,} bytes)")
+.top .wrap {
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+header {
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+
+.nav {
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.brand {
+  font-size:18px;
+  font-weight:800;
+  letter-spacing:.04em;
+  color:var(--green);
+}
+
+.brand span {
+  color:var(--gold);
+}
+
+.navtag {
+  font-size:12px;
+  color:var(--muted);
+}
+
+.hero {
+  padding:24px 0 34px;
+  background:#fff;
+}
+
+.crumb {
+  font-size:12px;
+  color:var(--muted);
+  margin:0 0 18px;
+}
+
+.hero-photo {
+  height:430px;
+  background:linear-gradient(135deg,#d7ddd5,#9eaa9f);
+  position:relative;
+  overflow:hidden;
+  border-radius:4px;
+  display:grid;
+  place-items:center;
+  color:#526158;
+  text-align:center;
+}
+
+.hero-photo:after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(0deg,#10271e55,transparent 55%);
+  pointer-events:none;
+}
+
+.hero-photo img {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.hero-photo .hint {
+  z-index:1;
+  font-size:13px;
+  padding:20px;
+}
+
+.status {
+  position:absolute;
+  z-index:2;
+  left:18px;
+  top:18px;
+  background:#fff;
+  color:var(--green);
+  padding:7px 11px;
+  border-radius:2px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.hero-info {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:24px;
+  align-items:end;
+  padding:24px 0 0;
+}
+
+.eyebrow {
+  color:var(--green2);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.hero h1 {
+  font-size:clamp(27px,3.5vw,38px);
+  line-height:1.15;
+  margin:8px 0;
+  color:#1b3027;
+}
+
+.address {
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.price {
+  text-align:right;
+  white-space:nowrap;
+}
+
+.price small {
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
+
+.price strong {
+  display:block;
+  color:var(--green);
+  font-size:clamp(24px,3vw,34px);
+}
+
+.btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--green);
+  color:#fff;
+  padding:14px 22px;
+  border-radius:4px;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.02em;
+  transition:.2s;
+}
+
+.btn:hover {
+  background:var(--green2);
+}
+
+.hero-info .btn {
+  margin-top:14px;
+}
+
+section {
+  padding:52px 0;
+}
+
+.section-title {
+  margin-bottom:28px;
+}
+
+.section-title .eyebrow {
+  margin-bottom:7px;
+}
+
+.section-title h2 {
+  margin:0;
+  color:var(--green);
+  font-size:clamp(24px,2.7vw,30px);
+  line-height:1.25;
+}
+
+.section-title p {
+  margin:9px 0 0;
+  color:var(--muted);
+  max-width:720px;
+  font-size:14px;
+}
+
+.about-grid {
+  display:grid;
+  grid-template-columns:1fr .85fr;
+  gap:55px;
+  align-items:start;
+}
+
+.about-copy p {
+  color:#59645d;
+  margin-top:0;
+}
+
+.summary-card {
+  background:#fff;
+  padding:0 0 0 24px;
+  border-left:1px solid var(--line);
+  border-radius:0;
+}
+
+.summary-card h3 {
+  margin:0 0 14px;
+  color:var(--green);
+  font-size:18px;
+}
+
+.specs {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+}
+
+.spec {
+  padding:12px 0;
+  border-top:1px solid #dfe4dd;
+}
+
+.spec small {
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.spec b {
+  font-size:14px;
+  color:#2b3931;
+}
+
+.gallery {
+  background:var(--cream);
+}
+
+.gallery-grid {
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1fr;
+  gap:12px;
+}
+
+.media {
+  aspect-ratio:4/3;
+  background:#e1e5de;
+  border-radius:3px;
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  color:#65736a;
+  text-align:center;
+}
+
+.media:first-child {
+  grid-row:span 2;
+  aspect-ratio:auto;
+  min-height:100%;
+}
+
+.media img,
+.media video {
+  position:absolute;
+  width:100%;
+  height:100%;
+  inset:0;
+  object-fit:cover;
+}
+
+.media img {
+  cursor:zoom-in;
+}
+
+.placeholder {
+  font-size:12px;
+  padding:18px;
+}
+
+.gallery-note {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:16px;
+}
+
+.faq details {
+  border-top:1px solid var(--line);
+  padding:17px 0;
+}
+
+.faq summary {
+  cursor:pointer;
+  font-weight:700;
+  color:var(--green);
+}
+
+.faq details p {
+  font-size:13px;
+  color:var(--muted);
+  max-width:760px;
+}
+
+footer {
+  background:#102c23;
+  color:#d5dfd8;
+  padding:26px 0;
+  font-size:11px;
+}
+
+.footer-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.subang-trigger {
+  color:inherit;
+  background:none;
+  border:0;
+  padding:0;
+  font:inherit;
+  cursor:pointer;
+}
+
+.subang-trigger:focus-visible {
+  outline:2px solid var(--gold);
+  outline-offset:4px;
+}
+
+.admin-panel {
+  display:none;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:20px;
+  margin-top:20px;
+  color:var(--ink);
+}
+
+.admin-panel.show {
+  display:block;
+}
+
+.admin-tools {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.admin-tools input {
+  max-width:100%;
+}
+
+.admin-tools button,
+.admin-list button {
+  padding:8px 12px;
+  border:0;
+  background:var(--green);
+  color:white;
+  border-radius:3px;
+  cursor:pointer;
+}
+
+.admin-list {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+
+.admin-item {
+  font-size:12px;
+  border:1px solid var(--line);
+  padding:9px;
+  overflow-wrap:anywhere;
+}
+
+.admin-item button {
+  margin-top:8px;
+  background:#9b4038;
+}
+
+.admin-hint {
+  font-size:12px;
+  color:var(--muted);
+}
+
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000e;
+  z-index:30;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal.show {
+  display:flex;
+}
+
+.modal img {
+  max-width:95vw;
+  max-height:90vh;
+}
+
+.modal button {
+  position:absolute;
+  right:18px;
+  top:14px;
+  border:0;
+  border-radius:50%;
+  width:42px;
+  height:42px;
+  font-size:25px;
+}
+
+@media(max-width:760px) {
+  .hero-photo {
+    height:300px;
+  }
+
+  .hero-info {
+    grid-template-columns:1fr;
+    align-items:start;
+  }
+
+  .price {
+    text-align:left;
+  }
+
+  .about-grid {
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+
+  .summary-card {
+    padding:22px 0 0;
+    border-left:0;
+    border-top:1px solid var(--line);
+  }
+
+  .gallery-grid {
+    grid-template-columns:1fr 1fr;
+  }
+
+  .media:first-child {
+    grid-row:auto;
+    aspect-ratio:4/3;
+    min-height:0;
+    grid-column:span 2;
+  }
+}
+
+@media(max-width:460px) {
+  .wrap {
+    width:calc(100% - 28px);
+  }
+
+  .top .wrap {
+    font-size:10px;
+  }
+
+  .nav {
+    height:65px;
+  }
+
+  .navtag {
+    display:none;
+  }
+
+  .hero-photo {
+    height:260px;
+  }
+
+  .gallery-grid {
+    gap:8px;
+  }
+
+  section {
+    padding:40px 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <span>Informasi properti dijual · Patokbeusi, Subang</span>
+    <span>Rumah & tanah untuk dijual</span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">PROPERTI<span>.</span>SUBANG</div>
+    <div class="navtag">Informasi rumah · Patokbeusi</div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="wrap">
+
+    <p class="crumb">
+      Beranda &nbsp;›&nbsp; Properti dijual &nbsp;›&nbsp; Patokbeusi, Subang
+    </p>
+
+    <div class="hero-photo">
+      <div class="status">Dijual</div>
+
+      <span class="hint" id="heroHint">
+        Foto utama properti<br>
+        Tambahkan foto asli bernama <b>hero-rumah.jpg</b>
+        di folder yang sama dengan file HTML.
+      </span>
+
+      <img
+        id="heroPhoto"
+        src="hero-rumah.jpg"
+        alt="Tampak depan rumah dijual di Patokbeusi"
+        style="display:none"
+      >
+    </div>
+
+    <div class="hero-info">
+      <div>
+        <div class="eyebrow">Rumah tinggal · Patokbeusi</div>
+
+        <h1>Rumah Dijual di Jl. Jungklang, Patokbeusi</h1>
+
+        <p class="address">
+          ⌖ Jl. Jungklang, Patokbeusi, Kabupaten Subang
+        </p>
+
+        <a class="btn wa" href="#">
+          Hubungi penjual via WhatsApp
+        </a>
+      </div>
+
+      <div class="price">
+        <small>Harga penawaran</small>
+        <strong>Rp150.000.000</strong>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="wrap about-grid">
+
+    <div class="about-copy">
+      <div class="section-title">
+        <div class="eyebrow">Deskripsi</div>
+        <h2>Rumah dengan area tanah luas.</h2>
+      </div>
+
+      <p>
+        Rumah satu lantai di Jl. Jungklang, Patokbeusi,
+        dengan area tanah 485 m² dan bangunan 40 m².
+        Untuk memastikan kondisi, akses, dan kelengkapan dokumen,
+        calon pembeli disarankan melakukan survei langsung.
+      </p>
+    </div>
+
+    <div class="summary-card">
+      <h3>Spesifikasi properti</h3>
+
+      <div class="specs">
+
+        <div class="spec">
+          <small>Jenis properti</small>
+          <b>Rumah tinggal</b>
+        </div>
+
+        <div class="spec">
+          <small>Status</small>
+          <b>Dijual</b>
+        </div>
+
+        <div class="spec">
+          <small>Luas tanah</small>
+          <b>485 m²</b>
+        </div>
+
+        <div class="spec">
+          <small>Luas bangunan</small>
+          <b>40 m²</b>
+        </div>
+
+        <div class="spec">
+          <small>Lantai</small>
+          <b>1 lantai</b>
+        </div>
+
+        <div class="spec">
+          <small>Kamar tidur</small>
+          <b>3</b>
+        </div>
+
+        <div class="spec">
+          <small>Kamar mandi</small>
+          <b>1</b>
+        </div>
+
+        <div class="spec">
+          <small>Akses</small>
+          <b>Mobil + kanopi</b>
+        </div>
+
+        <div class="spec">
+          <small>Kondisi</small>
+          <b>Terawat (perlu survei)</b>
+        </div>
+
+        <div class="spec">
+          <small>Dokumen disebutkan</small>
+          <b>AJB (perlu verifikasi)</b>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="gallery">
+  <div class="wrap">
+
+    <div class="section-title">
+      <div class="eyebrow">Galeri</div>
+      <h2>Foto properti</h2>
+    </div>
+
+    <div id="gallery" class="gallery-grid">
+      <div class="media">
+        <span class="placeholder">
+          Foto properti akan ditampilkan di sini.
+        </span>
+      </div>
+    </div>
+
+    <p class="gallery-note">
+      Dokumentasi properti. Silakan jadwalkan survei
+      untuk melihat kondisi secara langsung.
+    </p>
+
+    <div class="admin-panel" id="adminPanel">
+
+      <h3>Kelola galeri properti</h3>
+
+      <p class="admin-hint">
+        Pilih foto/video dari perangkat. Versi demo ini
+        menyimpan file di browser perangkat admin saja,
+        tidak otomatis tampil pada perangkat pengunjung lain
+        atau tersimpan di server.
+      </p>
+
+      <div class="admin-tools">
+        <input
+          type="file"
+          id="mediaFiles"
+          accept="image/*,video/*"
+          multiple
+        >
+
+        <button type="button" id="uploadBtn">
+          Unggah media
+        </button>
+
+        <button type="button" id="logoutBtn">
+          Keluar admin
+        </button>
+      </div>
+
+      <p class="admin-hint" id="adminStatus" role="status"></p>
+
+      <div id="adminList" class="admin-list"></div>
+
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+
+    <div class="section-title">
+      <div class="eyebrow">Lokasi properti</div>
+
+      <h2>Patokbeusi, Kabupaten Subang</h2>
+
+      <p>
+        Untuk titik lokasi yang tepat dan jadwal kunjungan,
+        silakan hubungi penjual.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+
+    <div class="section-title">
+      <div class="eyebrow">Sebelum membeli</div>
+      <h2>Informasi penting</h2>
+    </div>
+
+    <details>
+      <summary>Bagaimana cara melihat rumah?</summary>
+      <p>
+        Hubungi penjual melalui WhatsApp untuk meminta
+        titik lokasi dan mengatur jadwal survei.
+      </p>
+    </details>
+
+    <details>
+      <summary>Apakah dokumen properti dapat diperiksa?</summary>
+      <p>
+        Informasi yang disampaikan penjual menyebutkan AJB.
+        Calon pembeli sebaiknya memeriksa dokumen asli dan
+        melakukan pengecekan melalui pihak berwenang
+        sebelum transaksi.
+      </p>
+    </details>
+
+    <details>
+      <summary>Apakah kondisi rumah bisa diperiksa langsung?</summary>
+      <p>
+        Ya, calon pembeli disarankan melakukan kunjungan
+        untuk memeriksa kondisi bangunan, akses, lingkungan,
+        dan kesesuaian informasi.
+      </p>
+    </details>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+
+    <span>Informasi properti · Patokbeusi, Subang</span>
+
+    <span>
+      <button
+        type="button"
+        class="subang-trigger"
+        id="subangTrigger"
+        aria-label="Subang"
+      >Subang</button>
+
+      · © <span id="year"></span>
+    </span>
+
+  </div>
+</footer>
+
+<div
+  class="modal"
+  id="imageModal"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Pratinjau foto"
+>
+  <button id="closeModal" type="button" aria-label="Tutup">×</button>
+  <img id="modalImage" alt="Pratinjau media properti">
+</div>
+
+<script>
+"use strict";
+
+/*
+  DEMO ADMIN SISI-BROWSER.
+  Password hardcoded tidak aman untuk situs publik.
+*/
+
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "admin";
+
+const DB_NAME = "patokbeusi_gallery_property_v3";
+const STORE = "media";
+
+const waMessage =
+  "Halo, saya melihat iklan rumah dijual di Jl. Jungklang, Patokbeusi, Subang. Saya ingin bertanya mengenai detail properti dan jadwal survei.";
+
+/* NOMOR WHATSAPP PENJUAL */
+document.querySelectorAll(".wa").forEach(a => {
+  a.href =
+    "https://wa.me/62895605051234?text=" +
+    encodeURIComponent(waMessage);
+});
+
+/* TAHUN OTOMATIS */
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+/* FOTO UTAMA */
+const hero = document.getElementById("heroPhoto");
+
+hero.addEventListener("load", () => {
+  hero.style.display = "block";
+  document.getElementById("heroHint").style.display = "none";
+});
+
+hero.addEventListener("error", () => {
+  hero.style.display = "none";
+});
+
+let db;
+
+/* DATABASE GALERI */
+function openDB() {
+  return new Promise((resolve, reject) => {
+
+    const r = indexedDB.open(DB_NAME, 1);
+
+    r.onupgradeneeded = () => {
+      if (!r.result.objectStoreNames.contains(STORE)) {
+        r.result.createObjectStore(STORE, {
+          keyPath: "id",
+          autoIncrement: true
+        });
+      }
+    };
+
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+
+  });
+}
+
+/* AMBIL SEMUA MEDIA */
+function getAll() {
+  return new Promise((resolve, reject) => {
+
+    const r = db
+      .transaction(STORE, "readonly")
+      .objectStore(STORE)
+      .getAll();
+
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+
+  });
+}
+
+/* TAMBAH MEDIA */
+function add(item) {
+  return new Promise((resolve, reject) => {
+
+    const r = db
+      .transaction(STORE, "readwrite")
+      .objectStore(STORE)
+      .add(item);
+
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+
+  });
+}
+
+/* HAPUS MEDIA */
+function remove(id) {
+  return new Promise((resolve, reject) => {
+
+    const r = db
+      .transaction(STORE, "readwrite")
+      .objectStore(STORE)
+      .delete(id);
+
+    r.onsuccess = () => resolve();
+    r.onerror = () => reject(r.error);
+
+  });
+}
+
+/* MEMBUAT ELEMEN HTML */
+function el(tag, cls, txt) {
+  const n = document.createElement(tag);
+
+  if (cls) n.className = cls;
+  if (txt !== undefined) n.textContent = txt;
+
+  return n;
+}
+
+/* MENAMPILKAN GALERI */
+async function renderGallery() {
+
+  if (!db) return;
+
+  const gallery = document.getElementById("gallery");
+  const list = document.getElementById("adminList");
+
+  gallery.replaceChildren();
+  list.replaceChildren();
+
+  const items = await getAll();
+
+  if (!items.length) {
+    gallery.append(
+      el("div", "media", "Belum ada dokumentasi foto/video.")
+    );
+  }
+
+  for (const item of items) {
+
+    const card = el("div", "media");
+    const url = URL.createObjectURL(item.blob);
+
+    let media;
+
+    if (item.type.startsWith("video/")) {
+
+      media = document.createElement("video");
+      media.controls = true;
+      media.preload = "metadata";
+      media.src = url;
+
+    } else {
+
+      media = document.createElement("img");
+      media.src = url;
+      media.alt = item.name;
+      media.loading = "lazy";
+
+      media.addEventListener("click", () => {
+        document.getElementById("modalImage").src = url;
+        document.getElementById("imageModal").classList.add("show");
+      });
+
+    }
+
+    card.append(media);
+    gallery.append(card);
+
+    const row = el("div", "admin-item", item.name);
+    const del = el("button", "", "Hapus");
+
+    del.type = "button";
+
+    del.addEventListener("click", async () => {
+
+      if (confirm("Hapus media ini dari browser perangkat?")) {
+        await remove(item.id);
+        renderGallery();
+      }
+
+    });
+
+    row.append(document.createElement("br"), del);
+    list.append(row);
+
+  }
+
+}
+
+/* LOGIN ADMIN MELALUI TULISAN SUBANG */
+document.getElementById("subangTrigger").addEventListener("click", () => {
+
+  const u = prompt("Username admin:");
+
+  if (u === null) return;
+
+  const p = prompt("Password admin:");
+
+  if (p === null) return;
+
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+
+    document.getElementById("adminPanel").classList.add("show");
+
+    document.getElementById("adminPanel").scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+    renderGallery();
+
+  } else {
+
+    alert("Username atau password salah.");
+
+  }
+
+});
+
+/* LOGOUT ADMIN */
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  document.getElementById("adminPanel").classList.remove("show");
+});
+
+/* UPLOAD FOTO DAN VIDEO */
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+
+  const input = document.getElementById("mediaFiles");
+  const status = document.getElementById("adminStatus");
+  const files = [...input.files];
+
+  if (!files.length) {
+    status.textContent = "Pilih foto atau video terlebih dahulu.";
+    return;
+  }
+
+  try {
+
+    for (const f of files) {
+
+      if (
+        f.type.startsWith("image/") ||
+        f.type.startsWith("video/")
+      ) {
+
+        await add({
+          name:f.name,
+          type:f.type,
+          blob:f
+        });
+
+      }
+
+    }
+
+    input.value = "";
+
+    status.textContent =
+      "Media disimpan di browser perangkat ini.";
+
+    await renderGallery();
+
+  } catch (e) {
+
+    status.textContent =
+      "Penyimpanan gagal. Periksa kapasitas browser/perangkat.";
+
+  }
+
+});
+
+/* TUTUP PRATINJAU FOTO */
+document.getElementById("closeModal").addEventListener("click", () => {
+  document.getElementById("imageModal").classList.remove("show");
+});
+
+document.getElementById("imageModal").addEventListener("click", e => {
+
+  if (e.target.id === "imageModal") {
+    e.currentTarget.classList.remove("show");
+  }
+
+});
+
+document.addEventListener("keydown", e => {
+
+  if (e.key === "Escape") {
+    document.getElementById("imageModal").classList.remove("show");
+  }
+
+});
+
+/* JALANKAN DATABASE */
+openDB()
+  .then(value => {
+    db = value;
+    renderGallery();
+  })
+  .catch(() => {
+    document.getElementById("gallery").textContent =
+      "Galeri tidak dapat dimuat pada browser ini.";
+  });
+
+</script>
+
+</body>
+</html>
