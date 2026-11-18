@@ -58,13 +58,13 @@
 
   .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
   .media-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; position: relative; aspect-ratio: 4/3; }
-  .media-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+  .media-card img, .media-card video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
   .media-card:hover img { transform: scale(1.04); }
   .media-card .zoom-hint { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.62); color: #fff; font-size: 0.75rem; padding: 4px 10px; border-radius: 6px; }
   .media-card .del-btn { position: absolute; top: 8px; right: 8px; background: var(--danger); color: #fff; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; display: none; z-index: 10; }
   body.is-admin .media-card .del-btn { display: block; }
 
-  /* Admin Upload Panel */
+  /* Admin Panel Upload */
   #admin-panel { background: #fff; border: 2px dashed var(--brand); padding: 20px; border-radius: 12px; margin-bottom: 20px; display: none; }
   body.is-admin #admin-panel { display: block; }
   .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; align-items: center; }
@@ -78,8 +78,9 @@
   .cta h2 { justify-content: center; margin-bottom: 8px; }
   .cta h2::before { display: none; }
 
-  footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 28px 0 20px; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
-  .admin-link { background: none; border: none; color: var(--muted); cursor: pointer; text-decoration: underline; font-size: 0.85rem; }
+  footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 28px 0 20px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .admin-icon-btn { background: none; border: none; cursor: pointer; font-size: 1rem; opacity: 0.4; transition: 0.2s; }
+  .admin-icon-btn:hover { opacity: 1; }
 
   .sticky-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #ffffff; padding: 10px 16px; box-shadow: 0 -4px 14px rgba(0,0,0,0.1); z-index: 99; display: flex; justify-content: center; }
   .sticky-bar a { width: 100%; max-width: 600px; background: #22c55e; color: #fff; text-align: center; text-decoration: none; font-weight: 700; padding: 13px 18px; border-radius: 10px; font-size: 0.98rem; }
@@ -148,21 +149,21 @@
   </section>
 
   <section>
-    <h2>Galeri Foto Properti</h2>
+    <h2>Galeri Foto & Video Properti</h2>
     
-    <!-- Panel khusus Admin untuk upload foto langsung -->
+    <!-- Panel khusus Admin untuk upload Foto & Video langsung -->
     <div id="admin-panel">
-      <h3>⚙️ Panel Admin (Upload Foto Langsung)</h3>
-      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:8px;">Pilih foto dari komputer Anda untuk langsung ditambahkan ke galeri:</p>
+      <h3>⚙️ Panel Admin (Upload Media Langsung)</h3>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:8px;">Pilih Foto atau Video dari perangkat Anda untuk ditambahkan ke galeri:</p>
       <div class="admin-controls">
-        <input type="file" id="upload-file" accept="image/*" multiple>
-        <button class="btn" style="background:var(--brand); color:#fff; padding:8px 16px; font-size:0.9rem;" onclick="uploadPhotos()">Tambah Foto</button>
+        <input type="file" id="upload-file" accept="image/*,video/*" multiple>
+        <button class="btn" style="background:var(--brand); color:#fff; padding:8px 16px; font-size:0.9rem;" onclick="uploadMedia()">Tambah Media</button>
         <button class="btn" style="background:var(--danger); color:#fff; padding:8px 16px; font-size:0.9rem;" onclick="logoutAdmin()">Keluar Admin</button>
       </div>
     </div>
 
     <div id="media-grid" class="media-grid">
-      <!-- Foto akan dimuat otomatis lewat script di bawah -->
+      <!-- Media akan dimuat otomatis -->
     </div>
   </section>
 
@@ -180,7 +181,7 @@
 
 <footer>
   <span>© 2026 Penjualan Langsung Pemilik • Patokbeusi, Subang</span>
-  <button class="admin-link" onclick="loginAdmin()">🔑 Login Admin</button>
+  <button class="admin-icon-btn" onclick="loginAdmin()" title="Login Admin">🔑</button>
 </footer>
 
 <div class="sticky-bar">
@@ -195,35 +196,43 @@
 </div>
 
 <script>
-  // Default foto bawaan
-  const defaultPhotos = [
-    { name: "Tampak Depan", url: "Tampak Depan.png" },
-    { name: "Halaman", url: "Halaman.jpg" },
-    { name: "Ruang Depan", url: "Ruang Depan.jpg" },
-    { name: "Ruang Tengah", url: "Ruang tengah.jpg" },
-    { name: "Dapur", url: "Dapur.jpg" },
-    { name: "Kamar Depan", url: "Kamar Depan.jpg" },
-    { name: "Kamar Mandi", url: "Kamar Mandii.jpg" }
+  // Default media bawaan
+  const defaultMedia = [
+    { type: "image", name: "Tampak Depan", url: "Tampak Depan.png" },
+    { type: "image", name: "Halaman", url: "Halaman.jpg" },
+    { type: "image", name: "Ruang Depan", url: "Ruang Depan.jpg" },
+    { type: "image", name: "Ruang Tengah", url: "Ruang tengah.jpg" },
+    { type: "image", name: "Dapur", url: "Dapur.jpg" },
+    { type: "image", name: "Kamar Depan", url: "Kamar Depan.jpg" },
+    { type: "image", name: "Kamar Mandi", url: "Kamar Mandii.jpg" }
   ];
 
-  function getPhotos() {
-    const saved = localStorage.getItem('property_photos');
-    return saved ? JSON.parse(saved) : defaultPhotos;
+  function getMedia() {
+    const saved = localStorage.getItem('property_media_v2');
+    return saved ? JSON.parse(saved) : defaultMedia;
   }
 
   function renderGallery() {
     const grid = document.getElementById('media-grid');
-    const photos = getPhotos();
+    const mediaList = getMedia();
     grid.innerHTML = '';
 
-    photos.forEach((photo, index) => {
+    mediaList.forEach((item, index) => {
       const card = document.createElement('div');
       card.className = 'media-card';
-      card.innerHTML = `
-        <img src="${photo.url}" alt="${photo.name}" loading="lazy" onclick="openLightbox('${photo.url}')">
-        <span class="zoom-hint">🔍 Perbesar</span>
-        <button class="del-btn" onclick="deletePhoto(${index})">Hapus</button>
-      `;
+      
+      if (item.type === 'video') {
+        card.innerHTML = `
+          <video src="${item.url}" controls controlsList="nodownload"></video>
+          <button class="del-btn" onclick="deleteMedia(${index})">Hapus</button>
+        `;
+      } else {
+        card.innerHTML = `
+          <img src="${item.url}" alt="${item.name}" loading="lazy" onclick="openLightbox('${item.url}')">
+          <span class="zoom-hint">🔍 Perbesar</span>
+          <button class="del-btn" onclick="deleteMedia(${index})">Hapus</button>
+        `;
+      }
       grid.appendChild(card);
     });
   }
@@ -248,37 +257,43 @@
     alert("Keluar dari mode admin.");
   }
 
-  function uploadPhotos() {
+  function uploadMedia() {
     const input = document.getElementById('upload-file');
     if (input.files.length === 0) {
-      alert("Pilih foto terlebih dahulu!");
+      alert("Pilih foto atau video terlebih dahulu!");
       return;
     }
 
-    const photos = getPhotos();
+    const mediaList = getMedia();
     let processed = 0;
 
     Array.from(input.files).forEach(file => {
       const reader = new FileReader();
+      const isVideo = file.type.startsWith('video/');
+      
       reader.onload = function(e) {
-        photos.push({ name: file.name, url: e.target.result });
+        mediaList.push({ 
+          type: isVideo ? 'video' : 'image', 
+          name: file.name, 
+          url: e.target.result 
+        });
         processed++;
         if (processed === input.files.length) {
-          localStorage.setItem('property_photos', JSON.stringify(photos));
+          localStorage.setItem('property_media_v2', JSON.stringify(mediaList));
           renderGallery();
           input.value = '';
-          alert("Foto berhasil ditambahkan!");
+          alert("Media berhasil ditambahkan!");
         }
       };
       reader.readAsDataURL(file);
     });
   }
 
-  function deletePhoto(index) {
-    if (confirm("Hapus foto ini dari galeri?")) {
-      let photos = getPhotos();
-      photos.splice(index, 1);
-      localStorage.setItem('property_photos', JSON.stringify(photos));
+  function deleteMedia(index) {
+    if (confirm("Hapus media ini dari galeri?")) {
+      let mediaList = getMedia();
+      mediaList.splice(index, 1);
+      localStorage.setItem('property_media_v2', JSON.stringify(mediaList));
       renderGallery();
     }
   }
@@ -292,7 +307,6 @@
     document.getElementById('lightbox').classList.remove('active');
   }
 
-  // Muat galeri saat halaman dibuka
   window.addEventListener('DOMContentLoaded', renderGallery);
 </script>
 
