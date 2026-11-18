@@ -1,323 +1,82 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<base target="_top">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rumah Luas 485 m² Patokbeusi Subang — Langsung Pemilik</title>
-<style>
-  :root {
-    --bg-app: #f1f5f9;
-    --white: #ffffff;
-    --text-dark: #0f172a;
-    --text-muted: #475569;
-    --primary: #10b981;
-    --primary-dark: #047857;
-    --primary-bg: #ecfdf5;
-    --accent: #f59e0b;
-    --danger: #ef4444;
-    --border-color: #cbd5e1;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-  body { background: var(--bg-app); color: var(--text-dark); line-height: 1.6; padding-bottom: 95px; }
+from pathlib import Path
+import re
 
-  /* Top Banner */
-  .alert-banner { background: #0f172a; color: #fbbf24; text-align: center; font-size: 0.85rem; font-weight: 700; padding: 10px; letter-spacing: 0.5px; }
+path = Path("/mnt/data/landing-page-properti-patokbeusi.html")
+html = path.read_text(encoding="utf-8")
 
-  /* Hero Section Layout Baru */
-  .hero-section { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); color: var(--white); padding: 50px 20px; text-align: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; box-shadow: 0 10px 25px rgba(6,78,70,0.2); }
-  .hero-container { max-width: 800px; margin: 0 auto; }
-  .tag-pill { display: inline-block; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px); color: #6ee7b7; padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 16px; border: 1px solid rgba(110,231,183,0.3); }
-  .hero-section h1 { font-size: clamp(1.7rem, 4.5vw, 2.4rem); font-weight: 800; line-height: 1.25; margin-bottom: 14px; }
-  .hero-section p { font-size: 1.05rem; opacity: 0.9; margin-bottom: 24px; }
+# Minimalist styling: simplify typography, spacing, borders, and cards.
+html = html.replace(
+    "font:16px/1.6 Arial,Helvetica,sans-serif",
+    "font:15px/1.65 Arial,Helvetica,sans-serif"
+)
+html = html.replace(
+    "--green:#173d32;--green2:#245747;--gold:#d5ad68;--cream:#f5f3ed;--white:#fff;--ink:#202722;--muted:#6d7770;--line:#e4e8e3",
+    "--green:#243b32;--green2:#385849;--gold:#c6a875;--cream:#f7f8f6;--white:#fff;--ink:#252b27;--muted:#727b75;--line:#e8ebe8"
+)
+html = html.replace(".wrap{width:min(1160px,calc(100% - 40px));margin:auto}", ".wrap{width:min(1040px,calc(100% - 40px));margin:auto}")
+html = html.replace(".hero{padding:28px 0 42px;background:var(--cream)}", ".hero{padding:24px 0 34px;background:#fff}")
+html = html.replace(".hero-photo{height:470px;", ".hero-photo{height:430px;")
+html = html.replace("border-radius:8px", "border-radius:4px")
+html = html.replace(".status{position:absolute;z-index:2;left:22px;top:22px;background:var(--gold);color:#26372d;padding:8px 14px;border-radius:3px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}",
+                    ".status{position:absolute;z-index:2;left:18px;top:18px;background:#fff;color:var(--green);padding:7px 11px;border-radius:2px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}")
+html = html.replace(".hero-info{display:grid;grid-template-columns:1fr auto;gap:25px;align-items:end;padding:27px 4px 0}",
+                    ".hero-info{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding:24px 0 0}")
+html = html.replace("font-size:clamp(29px,4vw,43px)", "font-size:clamp(27px,3.5vw,38px)")
+html = html.replace(".quick{background:#fff;border-bottom:1px solid var(--line)}", ".quick{background:#fff;border-bottom:1px solid var(--line)}")
+html = html.replace("section{padding:66px 0}", "section{padding:52px 0}")
+html = html.replace(".section-title h2{margin:0;color:var(--green);font-size:clamp(26px,3vw,34px);line-height:1.2}",
+                    ".section-title h2{margin:0;color:var(--green);font-size:clamp(24px,2.7vw,30px);line-height:1.25}")
+html = html.replace(".summary-card{background:var(--cream);padding:25px;border-radius:7px}", ".summary-card{background:#fff;padding:0 0 0 24px;border-left:1px solid var(--line);border-radius:0}")
+html = html.replace(".gallery{background:var(--cream)}", ".gallery{background:var(--cream)}")
+html = html.replace(".media{aspect-ratio:4/3;background:#e1e5de;border-radius:5px;", ".media{aspect-ratio:4/3;background:#e1e5de;border-radius:3px;")
 
-  /* Main Wrapper */
-  .wrapper { max-width: 900px; margin: -30px auto 0; padding: 0 16px; position: relative; z-index: 5; }
+# Remove the duplicated quick-spec strip; specifications are listed once in the property details.
+html = re.sub(r'<div class="quick"><div class="wrap quick-grid">.*?</div></div>\s*<section>',
+              '<section>', html, count=1, flags=re.S)
 
-  /* Price Cards Layout Baru */
-  .price-flex { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 30px; }
-  @media(max-width: 600px) { .price-flex { grid-template-columns: 1fr; } }
-  
-  .price-box { background: var(--white); border-radius: 18px; padding: 24px 20px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 2px solid transparent; }
-  .price-box.highlight { border-color: var(--accent); background: #fffdf4; position: relative; }
-  .price-box.highlight::before { content: "PILIHAN UTAMA"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--danger); color: var(--white); font-size: 0.68rem; font-weight: 800; padding: 3px 12px; border-radius: 20px; }
-  .price-box span { display: block; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
-  .price-box .old { text-decoration: line-through; color: #94a3b8; font-size: 0.9rem; }
-  .price-box h2 { font-size: 1.9rem; color: var(--primary-dark); font-weight: 800; margin: 4px 0; }
-  .price-box.highlight h2 { color: #d97706; }
-  .price-box small { font-size: 0.78rem; color: var(--text-muted); }
+# Simplify copy in the property detail section and make the specs the single source of facts.
+html = html.replace(
+    '<p>Ditawarkan rumah satu lantai di kawasan Jl. Jungklang, Patokbeusi, Kabupaten Subang. Properti ini memiliki luas tanah 485 m² dan luas bangunan 40 m², dengan 3 kamar tidur serta akses kendaraan mobil.</p>\n<p>Silakan jadwalkan survei untuk melihat langsung kondisi bangunan, lingkungan sekitar, akses jalan, serta memeriksa dokumen properti.</p>\n<div class="checklist"><div class="check">Akses mobil</div><div class="check">Tersedia kanopi</div><div class="check">Rumah satu lantai</div><div class="check">3 kamar tidur</div></div>',
+    '<p>Rumah satu lantai di Jl. Jungklang, Patokbeusi, dengan area tanah 485 m² dan bangunan 40 m². Untuk memastikan kondisi, akses, dan kelengkapan dokumen, calon pembeli disarankan melakukan survei langsung.</p>'
+)
 
-  /* Content Cards */
-  .card-section { background: var(--white); border-radius: 18px; padding: 28px; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
-  .card-title { font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
-  .card-title span { width: 6px; height: 22px; background: var(--primary); border-radius: 4px; display: inline-block; }
+# Remove repeated contact CTAs below the hero. Keep a single WhatsApp button in the main property header.
+html = re.sub(r'<section><div class="wrap"><div class="section-title"><div class="eyebrow">Lokasi properti</div>.*?</div></section>\s*<section class="price-cta">.*?</section>',
+              '<section><div class="wrap"><div class="section-title"><div class="eyebrow">Lokasi properti</div><h2>Patokbeusi, Kabupaten Subang</h2><p>Untuk titik lokasi yang tepat dan jadwal kunjungan, silakan hubungi penjual.</p></div></div></section>',
+              html, count=1, flags=re.S)
 
-  /* Specs Grid Layout Baru */
-  .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
-  .spec-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; }
-  .spec-item label { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 2px; }
-  .spec-item val { display: block; font-size: 0.98rem; font-weight: 700; color: var(--text-dark); }
+# Remove the old repeated price banner CSS and reduce footer clutter.
+html = re.sub(r'\.price-cta\{.*?\}\.price-row\{.*?\}\.price-row \.eyebrow\{.*?\}\.price-row h2\{.*?\}\.price-row p\{.*?\}\.price-row \.btn\{.*?\}', '', html, count=1)
+html = html.replace(
+    '<span>Informasi penjualan rumah · Patokbeusi, Subang</span><span>Detail dapat dikonfirmasi kepada penjual.</span>',
+    '<span>Informasi properti · Patokbeusi, Subang</span>'
+)
+html = html.replace(
+    '<div class="section-title"><div class="eyebrow">Dokumentasi</div><h2>Galeri foto & video rumah</h2><p>Lihat kondisi properti melalui dokumentasi aktual. Silakan hubungi penjual jika ingin meminta foto tambahan atau menjadwalkan survei.</p></div>',
+    '<div class="section-title"><div class="eyebrow">Galeri</div><h2>Foto properti</h2></div>'
+)
+html = html.replace(
+    '<div class="section-title"><div class="eyebrow">Tentang properti</div><h2>Temukan rumah dengan area tanah yang lapang.</h2></div>',
+    '<div class="section-title"><div class="eyebrow">Deskripsi</div><h2>Rumah dengan area tanah luas.</h2></div>'
+)
+html = html.replace(
+    '<div class="section-title"><div class="eyebrow">Informasi pembelian</div><h2>Pertanyaan yang sering diajukan</h2></div>',
+    '<div class="section-title"><div class="eyebrow">Sebelum membeli</div><h2>Informasi penting</h2></div>'
+)
+html = html.replace(
+    '<p class="gallery-note">Pastikan foto dan video yang diunggah merupakan dokumentasi asli properti.</p>',
+    '<p class="gallery-note">Dokumentasi properti. Silakan jadwalkan survei untuk melihat kondisi secara langsung.</p>'
+)
 
-  /* Gallery & Upload Responsive */
-  .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin-top: 15px; }
-  .media-card { background: #000; border-radius: 14px; overflow: hidden; position: relative; aspect-ratio: 4/3; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
-  .media-card img, .media-card video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-  .media-card:hover img { transform: scale(1.03); }
-  .media-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.85rem; font-weight: 600; opacity: 0; transition: opacity 0.2s; }
-  .media-card:hover .media-overlay { opacity: 1; }
-  
-  .del-btn { position: absolute; top: 10px; right: 10px; background: var(--danger); color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: none; z-index: 10; }
-  body.is-admin .del-btn { display: block; }
+# Remove checklist styling no longer used and tune responsive layout.
+html = html.replace(".checklist{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin-top:22px}.check{font-size:13px;color:#405148}.check:before{content:\"✓\";color:var(--green2);font-weight:bold;margin-right:9px}", "")
+html = html.replace("@media(max-width:760px){.hero-photo{height:330px}", "@media(max-width:760px){.hero-photo{height:300px}")
+html = html.replace(".about-grid{grid-template-columns:1fr;gap:25px}", ".about-grid{grid-template-columns:1fr;gap:28px}.summary-card{padding:22px 0 0;border-left:0;border-top:1px solid var(--line)}")
+html = html.replace("@media(max-width:460px){.wrap{width:calc(100% - 28px)}", "@media(max-width:460px){.wrap{width:calc(100% - 28px)}")
+html = html.replace("section{padding:48px 0}", "section{padding:40px 0}")
+# Use a single WhatsApp destination/button; all CTA class links collapse to the hero one.
+html = re.sub(r'<a class="btn wa" href="#">Tanyakan lokasi & jadwal survei</a>', '', html)
+html = re.sub(r'<a class="btn wa" href="#">Hubungi penjual via WhatsApp</a>(?!.*?<a class="btn wa")', '<a class="btn wa" href="#">Hubungi penjual via WhatsApp</a>', html, count=0)
 
-  /* Admin Control Panel */
-  #admin-panel { background: var(--primary-bg); border: 2px dashed var(--primary); padding: 20px; border-radius: 14px; margin-bottom: 20px; display: none; }
-  body.is-admin #admin-panel { display: block; }
-  .admin-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
-  .admin-actions input[type="file"] { background: #fff; border: 1px solid var(--border-color); padding: 8px; border-radius: 8px; font-size: 0.85rem; flex: 1; min-width: 220px; }
-
-  /* Buttons */
-  .btn-main { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #22c55e; color: #fff; text-decoration: none; font-weight: 700; padding: 14px 28px; border-radius: 12px; font-size: 1rem; box-shadow: 0 6px 20px rgba(34,197,94,0.3); transition: 0.2s; border: none; cursor: pointer; width: 100%; text-align: center; }
-  .btn-main:hover { background: #16a34a; transform: translateY(-1px); }
-
-  /* Lightbox */
-  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
-  .lightbox.active { display: flex; }
-  .lightbox img { max-width: 100%; max-height: 85vh; border-radius: 10px; object-fit: contain; }
-  .lightbox-close { position: absolute; top: 20px; right: 25px; background: #fff; color: #000; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.3rem; font-weight: bold; cursor: pointer; }
-
-  /* Footer & Admin Trigger */
-  footer { text-align: center; padding: 30px 16px; color: var(--text-muted); font-size: 0.85rem; display: flex; justify-content: center; align-items: center; gap: 10px; }
-  .admin-key { background: none; border: none; cursor: pointer; font-size: 1rem; opacity: 0.3; transition: 0.2s; padding: 5px; }
-  .admin-key:hover { opacity: 1; transform: scale(1.2); }
-
-  /* Sticky Bottom Bar */
-  .sticky-action { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); padding: 12px 16px; box-shadow: 0 -4px 15px rgba(0,0,0,0.08); z-index: 99; display: flex; justify-content: center; border-top: 1px solid #e2e8f0; }
-  .sticky-action .btn-main { max-width: 550px; padding: 12px 20px; font-size: 0.95rem; }
-</style>
-</head>
-<body>
-
-<div class="alert-banner">⚡ PENAWARAN KHUSUS BULAN INI — TANPA PERANTARA & NEGO LANGSUNG</div>
-
-<header class="hero-section">
-  <div class="hero-container">
-    <div class="tag-pill">🔥 Peluang Emas Properti Subang</div>
-    <h1>Dijual Cepat Rumah & Tanah Super Luas 485 m² di Patokbeusi</h1>
-    <p>Akses mobil mudah, lingkungan asri, siap huni dengan halaman luas dan fleksibel untuk berbagai kebutuhan.</p>
-    <a class="btn-main" target="_blank" href="https://wa.me/62895605051234?text=Halo%2C%20saya%20tertarik%20dengan%20promo%20rumah%20dijual%20(tanah%20485%20m%C2%B2)%20di%20Patokbeusi%20Subang.%20Boleh%20minta%20info%20detail%20%26%20jadwal%20survei%3F">
-      💬 Chat Pemilik via WhatsApp
-    </a>
-  </div>
-</header>
-
-<div class="wrapper">
-  <!-- Harga Card -->
-  <div class="price-flex">
-    <div class="price-box highlight">
-      <span>HARGA NON FURNISH (KOSONGAN)</span>
-      <span class="old">Rp 175 Juta</span>
-      <h2>Rp 150 Juta</h2>
-      <small>Nego langsung saat survei lokasi</small>
-    </div>
-    <div class="price-box">
-      <span>HARGA FULL FURNISH (SIAP HUNI)</span>
-      <span class="old">Rp 185 Juta</span>
-      <h2>Rp 160 Juta</h2>
-      <small>Termasuk seluruh isi perabotan</small>
-    </div>
-  </div>
-
-  <!-- Keunggulan Singkat -->
-  <div class="card-section" style="background: var(--primary-bg); border-color: #6ee7b7;">
-    <h3 class="card-title" style="color: var(--primary-dark);"><span></span>Keunggulan Utama Properti</h3>
-    <ul style="list-style: none; display: grid; gap: 8px; font-size: 0.95rem; color: #064e3b; font-weight: 500;">
-      <li>✔️ <strong>Tanpa Perantara:</strong> Transaksi langsung dengan pemilik, dijamin aman & transparan.</li>
-      <li>✔️ <strong>Bonus Lahan Sangat Luas (485 m²):</strong> Nilai tanah di area sekitar terus meningkat pesat.</li>
-      <li>✔️ <strong>Multi Fungsi:</strong> Ideal untuk hunian keluarga, kebun produktif, maupun gudang/garasi.</li>
-    </ul>
-  </div>
-
-  <!-- Spesifikasi Detail -->
-  <div class="card-section">
-    <h3 class="card-title"><span></span>Spesifikasi Teknis</h3>
-    <div class="spec-grid">
-      <div class="spec-item"><label>Lokasi</label><val>Jl. Jungklang, Patokbeusi, Subang</val></div>
-      <div class="spec-item"><label>Luas Tanah</label><val>485 m² (Lega & Luas)</val></div>
-      <div class="spec-item"><label>Luas Bangunan</label><val>40 m² (1 Lantai)</val></div>
-      <div class="spec-item"><label>Kamar Tidur</label><val>3 Kamar Tidur</val></div>
-      <div class="spec-item"><label>Kamar Mandi</label><val>1 Kamar Mandi</val></div>
-      <div class="spec-item"><label>Legalitas</label><val>Akta Jual Beli (AJB) Aman</val></div>
-      <div class="spec-item"><label>Akses Kendaraan</label><val>Masuk Mobil + Kanopi</val></div>
-      <div class="spec-item"><label>Kondisi</label><val>Terawat & Siap Huni</val></div>
-    </div>
-  </div>
-
-  <!-- Galeri & Panel Admin Upload Media (Foto & Video) -->
-  <div class="card-section">
-    <h3 class="card-title"><span></span>Galeri Foto & Video Asli Properti</h3>
-    
-    <!-- Admin Panel yang dioptimalkan responsifnya -->
-    <div id="admin-panel">
-      <h4 style="color:var(--primary-dark); margin-bottom:6px; font-size: 1rem;">⚙️ Panel Admin: Tambah Foto / Video Instan</h4>
-      <p style="font-size:0.82rem; color:var(--text-muted);">Pilih satu atau banyak file foto/video dari perangkat Anda untuk langsung ditambahkan ke galeri web:</p>
-      <div class="admin-actions">
-        <input type="file" id="media-input" accept="image/*,video/*" multiple>
-        <button class="btn-main" style="width: auto; padding: 10px 20px; font-size: 0.9rem;" onclick="processUpload()">Upload Sekarang</button>
-        <button class="btn-main" style="width: auto; background: var(--danger); padding: 10px 20px; font-size: 0.9rem;" onclick="logoutAdmin()">Keluar</button>
-      </div>
-    </div>
-
-    <div id="media-grid" class="media-grid">
-      <!-- Item galeri dimuat secara dinamis oleh JavaScript -->
-    </div>
-  </div>
-
-  <!-- Closing Call to Action -->
-  <div class="card-section" style="text-align: center; background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);">
-    <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; color: var(--text-dark);">Jangan Sampai Keduluan Pembeli Lain!</h3>
-    <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 500px; margin: 0 auto 20px;">Properti seluas hampir 500 m² di harga 150 jutaan sangat langka. Hubungi kami untuk koordinasi survei lokasi.</p>
-    <a class="btn-main" target="_blank" href="https://wa.me/62895605051234?text=Halo%2C%20saya%20ingin%20tanya%20detail%20dan%20minta%20shareloc%20rumah%20dijual%20tanah%20485%20m%C2%B2%20di%20Patokbeusi.">
-      📲 Hubungi WhatsApp Sekarang (0895-6050-51234)
-    </a>
-  </div>
-</div>
-
-<footer>
-  <span>© 2026 Penjualan Langsung • Patokbeusi, Subang</span>
-  <button class="admin-key" onclick="triggerAdmin()" title="Admin Login">🔑</button>
-</footer>
-
-<!-- Sticky Bar Mobile -->
-<div class="sticky-action">
-  <a class="btn-main" target="_blank" href="https://wa.me/62895605051234?text=Halo%2C%20saya%20tertarik%20dengan%20rumah%20dijual%20(tanah%20485%20m%C2%B2).%20Boleh%20minta%20info%20lebih%20lanjut%3F">
-    💬 Tanya Detail & Nego via WhatsApp
-  </a>
-</div>
-
-<!-- Lightbox Modal -->
-<div id="lightbox" class="lightbox" onclick="closeLight()">
-  <button class="lightbox-close" onclick="closeLight()">×</button>
-  <img id="lightbox-img" src="" alt="Zoom">
-</div>
-
-<script>
-  // Default media bawaan
-  const initialMedia = [
-    { type: "image", name: "Tampak Depan", url: "Tampak Depan.png" },
-    { type: "image", name: "Halaman", url: "Halaman.jpg" },
-    { type: "image", name: "Ruang Depan", url: "Ruang Depan.jpg" },
-    { type: "image", name: "Ruang Tengah", url: "Ruang tengah.jpg" },
-    { type: "image", name: "Dapur", url: "Dapur.jpg" },
-    { type: "image", name: "Kamar Depan", url: "Kamar Depan.jpg" },
-    { type: "image", name: "Kamar Mandi", url: "Kamar Mandii.jpg" }
-  ];
-
-  function fetchMedia() {
-    const data = localStorage.getItem('property_media_v4');
-    return data ? JSON.parse(data) : initialMedia;
-  }
-
-  function renderList() {
-    const container = document.getElementById('media-grid');
-    const list = fetchMedia();
-    container.innerHTML = '';
-
-    list.forEach((item, idx) => {
-      const card = document.createElement('div');
-      card.className = 'media-card';
-
-      if (item.type === 'video') {
-        card.innerHTML = `
-          <video src="${item.url}" controls controlsList="nodownload"></video>
-          <button class="del-btn" onclick="removeItem(${idx})">Hapus</button>
-        `;
-      } else {
-        card.innerHTML = `
-          <img src="${item.url}" alt="${item.name}" loading="lazy">
-          <div class="media-overlay">🔍 Perbesar</div>
-          <button class="del-btn" onclick="removeItem(${idx})">Hapus</button>
-        `;
-        card.onclick = () => openLight(item.url);
-      }
-      container.appendChild(card);
-    });
-  }
-
-  function triggerAdmin() {
-    const u = prompt("Username Admin:");
-    if (u === "admin") {
-      const p = prompt("Sandi Admin:");
-      if (p === "admin123") {
-        document.body.classList.add('is-admin');
-        alert("Berhasil masuk ke Panel Admin!");
-      } else {
-        alert("Sandi salah!");
-      }
-    } else if (u !== null) {
-      alert("Username salah!");
-    }
-  }
-
-  function logoutAdmin() {
-    document.body.classList.remove('is-admin');
-    alert("Keluar dari panel admin.");
-  }
-
-  // Fungsi proses upload diperbaiki agar responsif menangani banyak foto/video sekaligus
-  function processUpload() {
-    const fileInput = document.getElementById('media-input');
-    if (fileInput.files.length === 0) {
-      alert("Pilih file foto atau video terlebih dahulu!");
-      return;
-    }
-
-    const currentList = fetchMedia();
-    let totalFiles = fileInput.files.length;
-    let completedCount = 0;
-
-    Array.from(fileInput.files).forEach(file => {
-      const reader = new FileReader();
-      const isVideo = file.type.startsWith('video/');
-
-      reader.onload = function(e) {
-        currentList.push({
-          type: isVideo ? 'video' : 'image',
-          name: file.name,
-          url: e.target.result
-        });
-        
-        completedCount++;
-        if (completedCount === totalFiles) {
-          localStorage.setItem('property_media_v4', JSON.stringify(currentList));
-          renderList();
-          fileInput.value = '';
-          alert("Berhasil! Foto/Video telah ditambahkan ke galeri.");
-        }
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function removeItem(idx) {
-    if (confirm("Hapus media ini dari galeri?")) {
-      let list = fetchMedia();
-      list.splice(idx, 1);
-      localStorage.setItem('property_media_v4', JSON.stringify(list));
-      renderList();
-    }
-  }
-
-  function openLight(url) {
-    document.getElementById('lightbox-img').src = url;
-    document.getElementById('lightbox').classList.add('active');
-  }
-
-  function closeLight() {
-    document.getElementById('lightbox').classList.remove('active');
-  }
-
-  window.addEventListener('DOMContentLoaded', renderList);
-</script>
-
-</body>
-</html>
+path.write_text(html, encoding="utf-8")
+print(f"Versi minimalis berhasil disimpan: {path} ({path.stat().st_size:,} bytes)")
